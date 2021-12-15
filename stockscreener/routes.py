@@ -1,9 +1,10 @@
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request
 from flask_bcrypt import check_password_hash
+from flask_login import login_user, current_user, logout_user, login_required
+
 from stockscreener import app, bcrypt, db
 from stockscreener.forms import RegistrationForm, LoginForm
 from stockscreener.models import User
-from flask_login import login_user, current_user, logout_user
 
 db.create_all()
 
@@ -28,8 +29,6 @@ def register():
     
 @app.route("/login", methods=['POST', 'GET'])
 def login():
-    # if current_user.is_authenticated:
-    #     return redirect(url_for('root'))
 
     form = LoginForm()
 
@@ -37,7 +36,8 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user and check_password_hash(user.password, form.password.data):
             login_user(user)
-            return redirect(url_for('root'))
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('root'))
         else:
             flash(f'Login failed! Please check the email and password', 'danger')
     return render_template('login.html', title='Log In', form=form)
@@ -46,3 +46,15 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('root'))
+
+@app.route("/account")
+@login_required
+def account():
+    
+    return render_template('account.html', title='Account')
+
+@app.route("/portfolio")
+@login_required
+def view_portfolio():
+    
+    return render_template('portfolio.html', title='Portfolio')
