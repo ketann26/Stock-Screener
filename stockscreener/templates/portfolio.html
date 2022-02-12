@@ -1,6 +1,108 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<h1>{{ current_user.username }}</h1>
+<h1 class='my-5'>{{ current_user.username }}'s Portfolio</h1>
+
+<h3 class='my-1'>Stocks</h3>
+
+<table class="table table-borderless text-center">
+    <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Stock</th>
+            <th scope="col">Sector</th>
+            <th scope="col">Category</th>
+            <th scope="col">Date Added</th>
+            <th scope="col">Buy Price</th>
+            <th scope="col">CMP</th>
+            <th scope="col">P/L</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <form method="POST">
+            {{ form.csrf_token }}
+            <tr>
+                <th></th>
+                <td>
+                    <!-- {{ form.stock_name(class="form-control form-control") }} -->
+                    {% if form.stock_name.errors %}
+                        {{ form.stock_name(class="form-control form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.stock_name.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.stock_name(class="form-control form-control") }}
+                    {% endif %}
+                </td>
+                <td>
+                    <!-- {{ form.sector(class="form-control form-control") }} -->
+                    {% if form.sector.errors %}
+                        {{ form.sector(class="form-control form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.sector.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.sector(class="form-control form-control") }}
+                    {% endif %}
+                </td>
+                <td>
+                    <!-- {{ form.category(class="form-control form-control") }} -->
+                    {% if form.category.errors %}
+                        {{ form.category(class="form-control form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.category.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.category(class="form-control form-control") }}
+                    {% endif %}
+                </td>
+                <td>
+                    <!-- {{ form.date_added(class="form-control form-control datepicker") }} -->
+                    {% if form.date_added.errors %}
+                    {{ form.date_added(class="form-control form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.date_added.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.date_added(class="form-control form-control") }}
+                {% endif %}
+                </td>
+                <td>
+                    <!-- {{ form.buy(class="form-control form-control") }} -->
+                    {% if form.buy.errors %}
+                        {{ form.buy(class="form-control form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.buy.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.buy(class="form-control form-control") }}
+                    {% endif %}
+                </td>
+                <td></td>
+                <td></td>
+                <td>{{ form.submit(class="btn btn-outline-info")}}</td>
+                
+            </tr>
+        </form>
+    </tfoot>
+</table>
 
 {% endblock content %}

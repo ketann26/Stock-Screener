@@ -1,5 +1,9 @@
+from flask.app import Flask
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
+from wtforms.fields.choices import SelectField
+from wtforms.fields.datetime import DateField
+from wtforms.fields.numeric import DecimalField
 from wtforms.validators import Length, ValidationError, Length, DataRequired, Email, EqualTo
 from stockscreener.models import User
 
@@ -26,4 +30,34 @@ class LoginForm(FlaskForm):
     email = StringField('E-mail', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Log In')
+
+class BuyStockForm(FlaskForm):
+
+    stock_name = StringField('Stock Name', validators=[DataRequired()])
+    sector = SelectField('Sector', choices=[('default', '-Select Sector-'),
+                                            ('auto', 'Automobile'),
+                                            ('chem', 'Chemicals'),
+                                            ('comm', 'Communication'),
+                                            ('const', 'Construction'),
+                                            ('consum', 'Consumer Durables'),
+                                            ('diversified', 'Diversified'),
+                                            ('energy', 'Energy'),
+                                            ('eng', 'Engineering'),
+                                            ('fin', 'Financial'),
+                                            ('fmcg', 'FMCG'),
+                                            ('pharma', 'Healthcare'),
+                                            ('insur', 'Insurance'),
+                                            ('metal', 'Metals'),
+                                            ('service', 'Services'),
+                                            ('tech', 'Technology'),
+                                            ('textile', 'Textiles'),
+                                            ('others', 'Others')])
+    category = SelectField('Category', choices=[('default', '-Select Category-'),
+                                                ('large', 'Large Cap'),
+                                                ('mid', 'Mid Cap'),
+                                                ('small', 'Small Cap')])
+    date_added = DateField('Date Added')
+    buy = DecimalField('Buy Price')
+    submit = SubmitField('Buy')
+
 

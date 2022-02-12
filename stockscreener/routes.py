@@ -3,8 +3,8 @@ from flask_bcrypt import check_password_hash
 from flask_login import login_user, current_user, logout_user, login_required
 
 from stockscreener import app, bcrypt, db
-from stockscreener.forms import RegistrationForm, LoginForm
-from stockscreener.models import User
+from stockscreener.forms import RegistrationForm, LoginForm, BuyStockForm
+from stockscreener.models import Portfolio, User
 
 db.create_all()
 
@@ -53,8 +53,33 @@ def account():
     
     return render_template('account.html', title='Account')
 
-@app.route("/portfolio")
+@app.route("/portfolio", methods=['POST', 'GET'])
 @login_required
 def view_portfolio():
+
+    form = BuyStockForm()
+
+    if form.validate_on_submit():
+
+        # new_stock = Portfolio(stock=form.stock_name.data, sector=form.sector.data, category=form.category.data,
+        #                         author=current_user)
+        # db.session.add(new_stock)
+        # db.session.commit()
+        flash('Stock Added to Holdings!', 'success')
+        return redirect(url_for('view_portfolio'))
     
-    return render_template('portfolio.html', title='Portfolio')
+    return render_template('portfolio.html', title='Portfolio', form=form)
+
+# @app.route("/portfolio/buy", methods=['POST', 'GET'])
+# @login_required
+# def buy():
+
+#     form = BuyStockForm()
+
+#     if form.validate_on_submit():
+#         flash('Stock Added to Holdings!', 'success')
+#         return redirect(url_for('view_portfolio'))
+#     return render_template('')
+
+
+# date_added=form.date_added.data, buy=form.buy.data, 
