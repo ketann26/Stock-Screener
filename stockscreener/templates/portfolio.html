@@ -18,14 +18,19 @@
             <th scope="col">P/L</th>
         </tr>
     </thead>
+
     <tbody>
+
+        {% for holding in holdings %}
         <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+            <th scope="row">{{ loop.index }}</th>
+            <td>{{ holding.stock }}</td>
+            <td>{{ holding.sector }}</td>
+            <td>{{ holding.category }}</td>
         </tr>
+        {% endfor %}
     </tbody>
+
     <tfoot>
         <form method="POST">
             {{ form.csrf_token }}

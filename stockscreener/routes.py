@@ -58,17 +58,18 @@ def account():
 def view_portfolio():
 
     form = BuyStockForm()
+    holdings = Portfolio.query.filter_by(user_id=current_user.id)
 
     if form.validate_on_submit():
 
-        # new_stock = Portfolio(stock=form.stock_name.data, sector=form.sector.data, category=form.category.data,
-        #                         author=current_user)
-        # db.session.add(new_stock)
-        # db.session.commit()
+        new_stock = Portfolio(stock=form.stock_name.data, sector=form.sector.data, category=form.category.data,
+                                author=current_user)
+        db.session.add(new_stock)
+        db.session.commit()
         flash('Stock Added to Holdings!', 'success')
         return redirect(url_for('view_portfolio'))
     
-    return render_template('portfolio.html', title='Portfolio', form=form)
+    return render_template('portfolio.html', title='Portfolio', form=form, holdings=holdings)
 
 # @app.route("/portfolio/buy", methods=['POST', 'GET'])
 # @login_required
