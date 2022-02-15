@@ -20,90 +20,105 @@
     </thead>
 
     <tbody>
-
+       
         {% for holding in holdings %}
         <tr>
             <th scope="row">{{ loop.index }}</th>
             <td>{{ holding.stock }}</td>
             <td>{{ holding.sector }}</td>
             <td>{{ holding.category }}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <form method="POST">
+                    {{ sellform.csrf_token }}
+                    {{ sellform.sell_id(value=holding.id) }}
+                    {{ sellform.sell_btn(class='btn btn-outline-danger') }}
+                </form>
+            </td>
         </tr>
         {% endfor %}
+        
+
+        
     </tbody>
 
+    <tr height="10px"></tr>
     <tfoot>
         <form method="POST">
-            {{ form.csrf_token }}
+            {{ buyform.csrf_token }}
             <tr>
                 <th></th>
                 <td>
-                    <!-- {{ form.stock_name(class="form-control form-control") }} -->
-                    {% if form.stock_name.errors %}
-                        {{ form.stock_name(class="form-control form-control is-invalid") }}
+                    
+                    {% if buyform.stock_name.errors %}
+                        {{ buyform.stock_name(class="form-control form-control is-invalid") }}
                         <div class="invalid-feedback">
-                            {% for error in form.stock_name.errors %}
+                            {% for error in buyform.stock_name.errors %}
                                 {{ error }}
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.stock_name(class="form-control form-control") }}
+                        {{ buyform.stock_name(class="form-control form-control") }}
                     {% endif %}
                 </td>
                 <td>
-                    <!-- {{ form.sector(class="form-control form-control") }} -->
-                    {% if form.sector.errors %}
-                        {{ form.sector(class="form-control form-control is-invalid") }}
+                    
+                    {% if buyform.sector.errors %}
+                        {{ buyform.sector(class="form-control form-control is-invalid") }}
                         <div class="invalid-feedback">
-                            {% for error in form.sector.errors %}
+                            {% for error in buyform.sector.errors %}
                                 {{ error }}
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.sector(class="form-control form-control") }}
+                        {{ buyform.sector(class="form-control form-control") }}
                     {% endif %}
                 </td>
                 <td>
-                    <!-- {{ form.category(class="form-control form-control") }} -->
-                    {% if form.category.errors %}
-                        {{ form.category(class="form-control form-control is-invalid") }}
+                   
+                    {% if buyform.category.errors %}
+                        {{ buyform.category(class="form-control form-control is-invalid") }}
                         <div class="invalid-feedback">
-                            {% for error in form.category.errors %}
+                            {% for error in buyform.category.errors %}
                                 {{ error }}
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.category(class="form-control form-control") }}
+                        {{ buyform.category(class="form-control form-control") }}
                     {% endif %}
                 </td>
                 <td>
-                    <!-- {{ form.date_added(class="form-control form-control datepicker") }} -->
-                    {% if form.date_added.errors %}
-                    {{ form.date_added(class="form-control form-control is-invalid") }}
+                   
+                    {% if buyform.date_added.errors %}
+                    {{ buyform.date_added(class="form-control form-control is-invalid") }}
                     <div class="invalid-feedback">
-                        {% for error in form.date_added.errors %}
+                        {% for error in buyform.date_added.errors %}
                             {{ error }}
                         {% endfor %}
                     </div>
                 {% else %}
-                    {{ form.date_added(class="form-control form-control") }}
+                    {{ buyform.date_added(class="form-control form-control") }}
                 {% endif %}
                 </td>
                 <td>
-                    <!-- {{ form.buy(class="form-control form-control") }} -->
-                    {% if form.buy.errors %}
-                        {{ form.buy(class="form-control form-control is-invalid") }}
+                   
+                    {% if buyform.buy.errors %}
+                        {{ buyform.buy(class="form-control form-control is-invalid") }}
                         <div class="invalid-feedback">
-                            {% for error in form.buy.errors %}
+                            {% for error in buyform.buy.errors %}
                                 {{ error }}
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.buy(class="form-control form-control") }}
+                        {{ buyform.buy(class="form-control form-control") }}
                     {% endif %}
                 </td>
                 <td></td>
                 <td></td>
-                <td>{{ form.submit(class="btn btn-outline-info")}}</td>
+                <td>{{ buyform.buy_btn(class="btn btn-outline-success") }}</td>
                 
             </tr>
         </form>

@@ -3,7 +3,7 @@ from flask_bcrypt import check_password_hash
 from flask_login import login_user, current_user, logout_user, login_required
 
 from stockscreener import app, bcrypt, db
-from stockscreener.forms import RegistrationForm, LoginForm, BuyStockForm
+from stockscreener.forms import RegistrationForm, LoginForm, BuyStockForm, SellStockForm
 from stockscreener.models import Portfolio, User
 
 db.create_all()
@@ -40,6 +40,7 @@ def login():
             return redirect(next_page) if next_page else redirect(url_for('root'))
         else:
             flash(f'Login failed! Please check the email and password', 'danger')
+            
     return render_template('login.html', title='Log In', form=form)
 
 @app.route("/logout")
@@ -57,30 +58,30 @@ def account():
 @login_required
 def view_portfolio():
 
-    form = BuyStockForm()
+    buyform = BuyStockForm()
+    sellform = SellStockForm()
     holdings = Portfolio.query.filter_by(user_id=current_user.id)
 
-    if form.validate_on_submit():
+    if sellform.sell_btn.data and sellform.validate():
 
-        new_stock = Portfolio(stock=form.stock_name.data, sector=form.sector.data, category=form.category.data,
+        stock_to_sell = Portfolio.query.get(sellform.sell_id.data)
+        db.session.delete(stock_to_sell)
+        db.session.commit()
+        flash('Stock Removed from Holdings!', 'danger')
+
+        return redirect(url_for('view_portfolio'))
+
+    if buyform.buy_btn.data and buyform.validate():
+
+        new_stock = Portfolio(stock=buyform.stock_name.data, sector=buyform.sector.data, category=buyform.category.data,
                                 author=current_user)
         db.session.add(new_stock)
         db.session.commit()
         flash('Stock Added to Holdings!', 'success')
-        return redirect(url_for('view_portfolio'))
-    
-    return render_template('portfolio.html', title='Portfolio', form=form, holdings=holdings)
 
-# @app.route("/portfolio/buy", methods=['POST', 'GET'])
-# @login_required
-# def buy():
-
-#     form = BuyStockForm()
-
-#     if form.validate_on_submit():
-#         flash('Stock Added to Holdings!', 'success')
-#         return redirect(url_for('view_portfolio'))
-#     return render_template('')
+        return redirect(url_for('view_portfolio'))       
+          
+    return render_template('portfolio.html', title='Portfolio', buyform=buyform, sellform=sellform, holdings=holdings)
 
 
 # date_added=form.date_added.data, buy=form.buy.data, 

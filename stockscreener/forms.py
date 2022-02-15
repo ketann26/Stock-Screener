@@ -1,6 +1,6 @@
 from flask.app import Flask
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, HiddenField
 from wtforms.fields.choices import SelectField
 from wtforms.fields.datetime import DateField
 from wtforms.fields.numeric import DecimalField
@@ -58,6 +58,11 @@ class BuyStockForm(FlaskForm):
                                                 ('small', 'Small Cap')])
     date_added = DateField('Date Added')
     buy = DecimalField('Buy Price')
-    submit = SubmitField('Buy')
+    buy_btn = SubmitField('Buy')
+
+class SellStockForm(FlaskForm):
+
+    sell_id = HiddenField('Hidden Table Row ID')
+    sell_btn = SubmitField('Sell')
 
 
